@@ -5,6 +5,7 @@
 const requireDirectory = require("require-directory");
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
+const catchError = require("@middlewares/exception.js");
 
 class InitApp {
   /**
@@ -15,6 +16,7 @@ class InitApp {
     InitApp.app = app;
     InitApp.initMiddleWares();
     InitApp.initRouters();
+    InitApp.initExceptions();
   }
 
   /**
@@ -43,6 +45,15 @@ class InitApp {
    */
   static initMiddleWares() {
     InitApp.app.use(bodyParser());
+    InitApp.app.use(catchError);
+  }
+
+  /**
+   * 在全局上挂载所有错误类
+   */
+  static initExceptions() {
+    const errors = require("@core/http-exception");
+    global.errs = errors;
   }
 }
 
