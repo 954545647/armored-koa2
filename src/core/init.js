@@ -17,6 +17,7 @@ class InitApp {
     InitApp.initMiddleWares();
     InitApp.initRouters();
     InitApp.initExceptions();
+    InitApp.initMysql();
   }
 
   /**
@@ -55,6 +56,11 @@ class InitApp {
     const errors = require("@core/http-exception");
     global.errs = errors;
   }
+
+  /**
+   * 连接数据库
+   */
+  static initMysql() {}
 }
 
 module.exports = InitApp;

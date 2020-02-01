@@ -1,6 +1,13 @@
 const router = require("koa-router")();
-
+const { User } = require("@db/model/index");
 router.get("/", async (ctx, next) => {
+  // 查询测试
+  const rex = await User.findOne({
+    where: {
+      userName: "rex"
+    }
+  });
+  console.log(rex.dataValues);
   ctx.body = {
     name: "rrr"
   };
@@ -8,11 +15,16 @@ router.get("/", async (ctx, next) => {
 
 router.post("/test", async (ctx, next) => {
   const { name } = ctx.request.body;
-  if (name == "rex") {
-    throw new global.errs.HttpException();
-  }
+  // 新建用户
+  const user = await User.create({
+    username: name,
+    password: "123",
+    phone: "123"
+  });
+  console.log(user.dataValues);
   ctx.body = {
-    name
+    name,
+    user
   };
 });
 
