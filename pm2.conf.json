@@ -1,6 +1,6 @@
 {
   "apps": {
-    "name": "myPm2",
+    "name": "pm2",
     "script": "app.js",
     "watch": true,
     "instances": 4,
