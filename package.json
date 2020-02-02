@@ -13,9 +13,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ioredis": "^4.14.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^8.0.6",
+    "koa-session": "^5.13.1",
     "module-alias": "^2.2.2",
     "mysql2": "^2.1.0",
     "require-directory": "^2.1.1",

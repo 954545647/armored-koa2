@@ -6,7 +6,8 @@ const requireDirectory = require("require-directory");
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
 const catchError = require("@middlewares/exception.js");
-
+const session = require("koa-session");
+const { SESSION_CONF, SESSION_KEYS } = require("@config/session");
 class InitApp {
   /**
    * 初始化方法
@@ -14,10 +15,10 @@ class InitApp {
    */
   static initCore(app) {
     InitApp.app = app;
+    InitApp.initSession();
     InitApp.initMiddleWares();
     InitApp.initRouters();
     InitApp.initExceptions();
-    InitApp.initMysql();
   }
 
   /**
@@ -47,6 +48,7 @@ class InitApp {
   static initMiddleWares() {
     InitApp.app.use(bodyParser());
     InitApp.app.use(catchError);
+    InitApp.app.use(session(SESSION_CONF, InitApp.app));
   }
 
   /**
@@ -58,9 +60,11 @@ class InitApp {
   }
 
   /**
-   * 连接数据库
+   * 初始化 Session 配置信息
    */
-  static initMysql() {}
+  static initSession() {
+    InitApp.app.keys = SESSION_KEYS;
+  }
 }
 
 module.exports = InitApp;
