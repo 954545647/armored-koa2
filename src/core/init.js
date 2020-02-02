@@ -7,7 +7,9 @@ const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
 const catchError = require("@middlewares/exception.js");
 const session = require("koa-session");
-const { SESSION_CONF, SESSION_KEYS } = require("@config/session");
+const { SESSION_CONF, SESSION_KEYS, ERROR_OPTIONS } = require("@config");
+const onError = require("koa-onerror");
+
 class InitApp {
   /**
    * 初始化方法
@@ -19,6 +21,7 @@ class InitApp {
     InitApp.initMiddleWares();
     InitApp.initRouters();
     InitApp.initExceptions();
+    InitApp.initErrorPage();
   }
 
   /**
@@ -46,6 +49,7 @@ class InitApp {
    * 初始化并使用中间件
    */
   static initMiddleWares() {
+    onError(InitApp.app, ERROR_OPTIONS);
     InitApp.app.use(bodyParser());
     InitApp.app.use(catchError);
     InitApp.app.use(session(SESSION_CONF, InitApp.app));
@@ -64,6 +68,26 @@ class InitApp {
    */
   static initSession() {
     InitApp.app.keys = SESSION_KEYS;
+  }
+
+  /**
+   * 配置404错误页面
+   */
+  static initErrorPage() {
+    const routesDirectory = `${process.cwd()}/src/views`;
+    requireDirectory(module, routesDirectory, {
+      visit: whenLoadModule
+    });
+
+    /**
+     * 当每个模块被加载的时候会触发调用
+     * @param {obj} obj 路由实例
+     */
+    function whenLoadModule(obj) {
+      if (obj instanceof Router) {
+        InitApp.app.use(obj.routes(), obj.allowedMethods());
+      }
+    }
   }
 }
 
