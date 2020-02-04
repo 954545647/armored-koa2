@@ -4,7 +4,7 @@
 const router = require("koa-router")();
 const fs = require("fs");
 const path = require("path");
-const { User } = require("@db/model/index");
+const RegisterValidator = require("@validators/user");
 
 router.get("/", async ctx => {
   const file = process.cwd();
@@ -14,26 +14,12 @@ router.get("/", async ctx => {
   return;
 });
 
+router.get("/user/:id", async ctx => {
+  let v = await new RegisterValidator().validate(ctx);
+});
+
 router.post("/test", async ctx => {
-  const { name } = ctx.request.body;
-  // 新建用户
-  const user = await User.create({
-    username: name,
-    password: "123",
-    phone: "123"
-  });
-  console.log(user.dataValues);
-  // 查询测试
-  const rex = await User.findOne({
-    where: {
-      userName: "rex"
-    }
-  });
-  console.log(rex.dataValues);
-  ctx.body = {
-    name,
-    user
-  };
+  let v = await new RegisterValidator().validate(ctx);
 });
 
 router.post("/login", async ctx => {

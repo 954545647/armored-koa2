@@ -19,10 +19,12 @@
     "koa-onerror": "^4.1.0",
     "koa-router": "^8.0.6",
     "koa-session": "^5.13.1",
+    "loadsh": "0.0.4",
     "module-alias": "^2.2.2",
     "mysql2": "^2.1.0",
     "require-directory": "^2.1.1",
-    "sequelize": "^5.21.3"
+    "sequelize": "^5.21.3",
+    "validator": "^12.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
@@ -41,6 +43,7 @@
     "@utils": "src/utils",
     "@config": "src/config",
     "@db": "src/db",
-    "@public": "src/public"
+    "@public": "src/public",
+    "@validators": "src/validators"
   }
 }
